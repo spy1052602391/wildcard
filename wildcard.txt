@@ -1,0 +1,36 @@
+package 通配符问号;
+
+class Point<T1, T2>{
+    T1 x;
+    T2 y;
+    public T1 getX() {
+        return x;
+    }
+    public void setX(T1 x) {
+        this.x = x;
+    }
+    public T2 getY() {
+        return y;
+    }
+    public void setY(T2 y) {
+        this.y = y;
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Point<Integer,Integer> in = new Point<>();
+        in.setX(10);
+        in.setY(20);
+        Point<String,String> str = new Point<>();
+        str.setX("东经20度");
+        str.setY("北纬20度");
+        //printPoint(in);  //加上super String这个就错了，因为方法只接受String及其父类的类型
+        printPoint(str);  //加上extends Number传入字符串的类型就错了，因为方法只接受Number及其子类的类型
+    }
+                        //只有? super 传入的类型数据可以被改变，因为传入的子类到形参的父类是自动向上转型
+    static public void printPoint(Point<? super String,? super String> p){     //如果不加?,在编译之后会进行类型擦除，Point就会自动向上转型为Object 用?可以使用任意的数据类型
+        p.setX("东经50度");
+        System.out.println("This point is: "+p.getX()+"、"+p.getY());
+    }
+}
